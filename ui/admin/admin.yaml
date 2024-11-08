@@ -1,0 +1,281 @@
+about:
+  date: November 08, 2024 05:41:24
+  recent_changes: works with modified safrs-react-admin
+  version: 0.0.0
+api_root: '{http_type}://{swagger_host}:{port}/{api}'
+authentication: '{system-default}'
+info:
+  number_relationships: 7
+  number_tables: 12
+info_toggle_checked: true
+resources:
+  Customer:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      search: true
+      sort: true
+    - name: last_name
+    - name: email
+    - name: id
+    description: Represents a customer of the company.
+    info_list: Represents a customer of the company.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - customer_id
+      name: OrderList
+      resource: Order
+    type: Customer
+    user_key: first_name
+  Department:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: location
+    - name: id
+    description: Represents a department within the company.
+    info_list: Represents a department within the company.
+    type: Department
+    user_key: name
+  Employee:
+    attributes:
+    - label: ' first_name*'
+      name: first_name
+      search: true
+      sort: true
+    - name: last_name
+    - name: hire_date
+      type: DATETIME
+    - name: id
+    description: Represents an employee in the organization.
+    info_list: Represents an employee in the organization.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - employee_id
+      name: EmployeeProjectList
+      resource: EmployeeProject
+    type: Employee
+    user_key: first_name
+  EmployeeProject:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: employee_id
+      required: true
+    - name: project_id
+      required: true
+    description: Junction table linking employees to projects.
+    info_list: Junction table linking employees to projects.
+    tab_groups:
+    - direction: toone
+      fks:
+      - employee_id
+      name: employee
+      resource: Employee
+    - direction: toone
+      fks:
+      - project_id
+      name: project
+      resource: Project
+    type: EmployeeProject
+    user_key: id
+  Inventory:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: product_id
+      required: true
+    - name: quantity_in_stock
+    description: Represents inventory details for products.
+    info_list: Represents inventory details for products.
+    tab_groups:
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: Inventory
+    user_key: id
+  Order:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: customer_id
+      required: true
+    - name: order_date
+      type: DATETIME
+    - name: total_amount
+    description: Represents an order made by a customer.
+    info_list: Represents an order made by a customer.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - order_id
+      name: OrderItemList
+      resource: OrderItem
+    - direction: toone
+      fks:
+      - customer_id
+      name: customer
+      resource: Customer
+    type: Order
+    user_key: id
+  OrderItem:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: order_id
+      required: true
+    - name: product_id
+      required: true
+    - name: quantity
+    description: Represents the relationship between orders and products.
+    info_list: Represents the relationship between orders and products.
+    tab_groups:
+    - direction: toone
+      fks:
+      - order_id
+      name: order
+      resource: Order
+    - direction: toone
+      fks:
+      - product_id
+      name: product
+      resource: Product
+    type: OrderItem
+    user_key: id
+  Position:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: title
+    - name: salary
+    description: Represents the position or role of an employee.
+    info_list: Represents the position or role of an employee.
+    type: Position
+    user_key: id
+  Product:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: price
+    - name: id
+    description: Represents a product available for sale.
+    info_list: Represents a product available for sale.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - product_id
+      name: InventoryList
+      resource: Inventory
+    - direction: tomany
+      fks:
+      - product_id
+      name: OrderItemList
+      resource: OrderItem
+    type: Product
+    user_key: name
+  Project:
+    attributes:
+    - label: ' project_name*'
+      name: project_name
+      search: true
+      sort: true
+    - name: start_date
+      type: DATETIME
+    - name: id
+    description: Represents a project handled by the company.
+    info_list: Represents a project handled by the company.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - project_id
+      name: EmployeeProjectList
+      resource: EmployeeProject
+    type: Project
+    user_key: project_name
+  Shipment:
+    attributes:
+    - label: ' id*'
+      name: id
+      search: true
+      sort: true
+    - name: vendor_id
+      required: true
+    - name: shipment_date
+      type: DATETIME
+    description: Represents a shipment sent by a vendor.
+    info_list: Represents a shipment sent by a vendor.
+    tab_groups:
+    - direction: toone
+      fks:
+      - vendor_id
+      name: vendor
+      resource: Vendor
+    type: Shipment
+    user_key: id
+  Vendor:
+    attributes:
+    - label: ' name*'
+      name: name
+      search: true
+      sort: true
+    - name: contact_info
+    - name: id
+    description: Represents a vendor supplying products.
+    info_list: Represents a vendor supplying products.
+    tab_groups:
+    - direction: tomany
+      fks:
+      - vendor_id
+      name: ShipmentList
+      resource: Shipment
+    type: Vendor
+    user_key: name
+settings:
+  HomeJS: /admin-app/home.js
+  max_list_columns: 8
+  style_guide:
+    applicationLocales:
+    - en
+    - es
+    currency_symbol: $
+    currency_symbol_position: left
+    date_format: LL
+    decimal_max: '1000000000'
+    decimal_min: '0'
+    decimal_separator: .
+    detail_mode: tab
+    edit_on_mode: dblclick
+    exclude_listpicker: false
+    include_translation: 'false'
+    keycloak_client_id: alsclient
+    keycloak_realm: kcals
+    keycloak_url: http://localhost:8080
+    locale: en
+    max_decimal_digits: '4'
+    min_decimal_digits: '2'
+    new_mode: dialog
+    pick_style: list
+    row_height: small,
+    serviceType: OntimizeEE
+    startSessionPath: /auth/login
+    style: light
+    thousand_separator: ','
+    use_keycloak: 'false'
